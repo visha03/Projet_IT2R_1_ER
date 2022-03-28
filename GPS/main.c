@@ -55,13 +55,13 @@ void Init_UART(void) {
     Driver_USART3.Initialize(NULL);
     Driver_USART3.PowerControl(ARM_POWER_FULL);
     Driver_USART3.Control(	ARM_USART_MODE_ASYNCHRONOUS |			// liaison asynchrone
-                            ARM_USART_DATA_BITS_8		|           // donnée 8 bits
+                            ARM_USART_DATA_BITS_8		|           // donnÃ©e 8 bits
                             ARM_USART_STOP_BITS_1		|           // 1 bit de stop
-                            ARM_USART_PARITY_NONE		|			// pas de bit de parité
-                            ARM_USART_FLOW_CONTROL_NONE,            // aucun contrôle du flux
+                            ARM_USART_PARITY_NONE		|			// pas de bit de paritÃ©
+                            ARM_USART_FLOW_CONTROL_NONE,            // aucun contrÃ´le du flux
                             9600);                                  // default baud rate 9,6 kBD
-    Driver_USART3.Control(ARM_USART_CONTROL_TX,1);                  // validation émission
-    Driver_USART3.Control(ARM_USART_CONTROL_RX,1);                  // validation réception
+    Driver_USART3.Control(ARM_USART_CONTROL_TX,1);                  // validation Ã©mission
+    Driver_USART3.Control(ARM_USART_CONTROL_RX,1);                  // validation rÃ©ception
 }
 
 
@@ -70,37 +70,37 @@ void Init_UART(void) {
 
 int main (void){
     char data[100];                   
-    char carac;                            // tableau pour récéption du symbole $
-    char trameIntro[7]="GPGGA";            // trame GPS qu'on souhaite récupérer
+    char carac;                            // tableau pour rÃ©cÃ©ption du symbole $
+    char trameIntro[7]="GPGGA";            // trame GPS qu'on souhaite rÃ©cupÃ©rer
 		char i;                                // position
     Init_UART();
 
     while(1){
         // analyse de la trame
 
-        // récupération un caractère à la fois dès qu'il arrive (on écrase l'ancien)
+        // rÃ©cupÃ©ration un caractÃ¨re Ã  la fois dÃ¨s qu'il arrive (on Ã©crase l'ancien)
         Driver_USART3.Receive(&carac,1);       // remplir une case
         while(Driver_USART3.GetRxCount()<1); // on attend que 1 case soit pleine
 
         if(carac=='$')
         {   
-						Driver_USART3.Receive(data,5); // la fonction remplira jusqu'à 6 cases
+	    Driver_USART3.Receive(data,5); // la fonction remplira jusqu'Ã  6 cases
             while (Driver_USART3.GetRxCount()<5 ); // on attend que 6 cases soit pleine
-						data[5]=NULL;
+	    data[5]=NULL;
 					
-						if (strncmp(data,trameIntro,5)==0)
+	    if (strncmp(data,trameIntro,5)==0)
             {	
-								// récupérer le reste 
-								Driver_USART3.Receive(data,37); // la fonction remplira jusqu'à 6 cases
-								while (Driver_USART3.GetRxCount()<37); // on attend que 6 cases soit pleine
+	      // rÃ©cupÃ©rer le reste 
+	      Driver_USART3.Receive(data,37); // la fonction remplira jusqu'Ã  6 cases
+	      while (Driver_USART3.GetRxCount()<37); // on attend que 6 cases soit pleine
 							
 								
-						}
+	    }
 
          }
 					  
 					
-        }
+      }
 		return 0;
 }
 
